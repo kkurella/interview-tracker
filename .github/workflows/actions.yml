@@ -28,7 +28,10 @@ jobs:
 
     - name: Build Project
       run: mvn clean install
-
+      
+    - name: Debug POM
+      run: cat pom.xml
+      
     - name: Extract Version from pom.xml
       id: extract_version
       run: |
