@@ -1,0 +1,45 @@
+name: Build and Tag on Merge to Develop
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - closed
+
+jobs:
+  build-and-tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Set up Maven
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: maven
+
+    - name: Build Project
+      run: mvn clean install
+
+    - name: Extract Version from pom.xml
+      id: extract_version
+      run: |
+        # Extract version from pom.xml
+        version=$(xmllint --xpath "string(//_:project/_:version)" pom.xml)
+        # Remove "-SNAPSHOT" from version
+        tag_version=${version%-SNAPSHOT}
+        echo "VERSION=$tag_version" >> $GITHUB_ENV
+        echo "Tag version: $tag_version"
+
+    - name: Create and Push Tag
+      if: success() && env.VERSION != ''
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git tag $VERSION
+        git push origin $VERSION
