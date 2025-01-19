@@ -32,8 +32,8 @@ jobs:
     - name: Extract Version from pom.xml
       id: extract_version
       run: |
-        # Extract version from pom.xml
-        version=$(xmllint --xpath "string(//_:project/_:version)" pom.xml)
+        # Extract version from pom.xml using namespace-aware XPath
+        version=$(xmllint --xpath "string(//project/version)" pom.xml)
         # Remove "-SNAPSHOT" from version
         tag_version=${version%-SNAPSHOT}
         echo "VERSION=$tag_version" >> $GITHUB_ENV
