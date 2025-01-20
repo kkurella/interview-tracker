@@ -23,15 +23,9 @@ jobs:
         java-version: '11'
         cache: maven
 
-    - name: Install xmllint
-      run: sudo apt-get update && sudo apt-get install -y libxml2-utils
-
     - name: Build Project
       run: mvn clean install
-      
-    - name: Debug POM
-      run: cat pom.xml
-      
+    
     - name: Extract Version from pom.xml
       id: extract_version
       run: |
@@ -42,10 +36,25 @@ jobs:
         echo "VERSION=$tag_version" >> $GITHUB_ENV
         echo "Tag version: $tag_version"
 
-    - name: Create and Push Tag
-      if: success() && env.VERSION != ''
+    - name: Increment version and create tag
+      if: success()
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git tag $VERSION
-        git push origin $VERSION
+        # Get the latest tag from git
+        latest_tag=$(git tag -l "user-management-service:*" | sort -V | tail -n 1)
+        
+        # Extract the version number
+        version=${latest_tag#user-management-service:}
+        
+        # Increment the patch version
+        IFS='.' read -r major minor patch <<< "$version"
+        patch=$((patch + 1))
+        new_version="$major.$minor.$patch"
+        
+        # Create the new tag
+        new_tag="user-management-service:$new_version"
+        
+        # Tag the commit
+        git tag "$new_tag"
+        
+        # Push the tag
+        git push origin "$new_tag"
