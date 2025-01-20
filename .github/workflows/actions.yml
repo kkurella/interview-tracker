@@ -32,19 +32,23 @@ jobs:
         # Get the latest tag from git
         latest_tag=$(git tag -l "user-management-service-*" | sort -V | tail -n 1)
         
-        # Extract the version number
+        # Extract the version number from the latest tag, for example: user-management-service-1.0.1
         version=${latest_tag#user-management-service-}
         
-        # Increment the patch version
+        # Increment the patch version (e.g., 1.0.1 -> 1.0.2)
         IFS='.' read -r major minor patch <<< "$version"
         patch=$((patch + 1))
         new_version="$major.$minor.$patch"
         
-        # Create the new tag
+        # Create a new tag with the incremented version
         new_tag="user-management-service-$new_version"
         
-        # Tag the commit
+        # Tag the commit with the new version
         git tag "$new_tag"
         
-        # Push the tag
+        # Push the new tag to the remote repository
         git push origin "$new_tag"
+        
+        # Output the new tag for logging purposes
+        echo "Created new tag: $new_tag"
+        
