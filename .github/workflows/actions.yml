@@ -30,10 +30,10 @@ jobs:
       if: success()
       run: |
         # Get the latest tag from git
-        latest_tag=$(git tag -l "user-management-service:*" | sort -V | tail -n 1)
+        latest_tag=$(git tag -l "user-management-service-*" | sort -V | tail -n 1)
         
         # Extract the version number
-        version=${latest_tag#user-management-service:}
+        version=${latest_tag#user-management-service-}
         
         # Increment the patch version
         IFS='.' read -r major minor patch <<< "$version"
@@ -41,7 +41,7 @@ jobs:
         new_version="$major.$minor.$patch"
         
         # Create the new tag
-        new_tag="user-management-service:$new_version"
+        new_tag="user-management-service-$new_version"
         
         # Tag the commit
         git tag "$new_tag"
