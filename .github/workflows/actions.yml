@@ -32,6 +32,7 @@ jobs:
       with:
         image: kkurella/iview-tracker
         tags: v1, latest
+        registry: https://index.docker.io/v1/
         registry: registry-url.io
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
