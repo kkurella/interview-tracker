@@ -1,4 +1,4 @@
-name: Build and Tag on Merge to Develop
+name: Build and push image on Merge to Develop
 
 on:
   pull_request:
@@ -32,6 +32,14 @@ jobs:
       with:
         image: kkurella/user-management-service-image
         tags: v1, latest
+<<<<<<< HEAD
         dockerfile: user-management-service/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+=======
+        registry: https://index.docker.io/v1/
+        dockerfile: user-management-service/Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        context: user-management-service
+>>>>>>> 188b353b03ac240852ef9171d4f70579bd377f37
