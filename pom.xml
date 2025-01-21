@@ -34,7 +34,7 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!-- Common plugins, e.g., Spring Boot Maven Plugin -->
+                <!-- Common plugins-->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
