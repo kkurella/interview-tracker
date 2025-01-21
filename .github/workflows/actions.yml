@@ -33,15 +33,23 @@ jobs:
       run: echo "Repository Secret ${{ secrets.DOCKER_USERNAME }}"
       
     - name: Use Environment Secret
-      run: echo "Environment Secret ${{ secrets.DOCKER_PASSWORD }}"  
+      run: echo "Environment Secret ${{ secrets.DOCKER_PASSWORD }}_debug"
+    
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Build & push Docker image
-      if: ${{ success() }}
-      uses: mr-smithers-excellent/docker-build-push@v6
-      with:
-        image: kkurella/user-management-service-image
-        tags: v1, latest
-        registry: Docker.io
-        dockerfile: user-management-service/Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/user-management-service-image:v2 .
+        docker push ${{ secrets.DOCKER_USERNAME }}/user-management-service-image:latest
+
+    # - name: Build & push Docker image
+    #   if: ${{ success() }}
+    #   uses: mr-smithers-excellent/docker-build-push@v6
+    #   with:
+    #     image: kkurella/user-management-service-image
+    #     tags: v1, latest
+    #     registry: Docker.io
+    #     dockerfile: user-management-service/Dockerfile
+    #     username: ${{ secrets.DOCKER_USERNAME }}
+    #     password: ${{ secrets.DOCKER_PASSWORD }}
