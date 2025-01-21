@@ -30,9 +30,10 @@ jobs:
       if: ${{ success() }}
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
-        image: kkurella/iview-tracker
+        image: kkurella/user-management-service-image
         tags: v1, latest
         registry: https://index.docker.io/v1/
-        dockerfile: Dockerfile
+        dockerfile: user-management-service/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        context: user-management-service
