@@ -1,4 +1,4 @@
-name: Build and Tag on Merge to Develop
+name: Build and push image on Merge to Develop
 
 on:
   pull_request:
@@ -27,15 +27,12 @@ jobs:
       run: mvn clean install
 
     - name: Build & push Docker image
-      if: success()
-
-    - uses: mr-smithers-excellent/docker-build-push@v6
+      if: ${{ success() }}
+      uses: mr-smithers-excellent/docker-build-push@v6
       with:
-        image: repo/image
+        image: kkurella/iview-tracker
         tags: v1, latest
         registry: registry-url.io
-        dockerfile: Dockerfile.ci
+        dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-
-        
