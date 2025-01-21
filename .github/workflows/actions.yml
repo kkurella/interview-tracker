@@ -28,6 +28,12 @@ jobs:
 
     - name: Build Project
       run: mvn clean install
+      
+    - name: Use Repository Secret
+      run: echo "Repository Secret ${{ secrets.DOCKER_USERNAME }}"
+      
+    - name: Use Environment Secret
+      run: echo "Environment Secret ${{ secrets.DOCKER_PASSWORD }}"  
 
     - name: Build & push Docker image
       if: ${{ success() }}
