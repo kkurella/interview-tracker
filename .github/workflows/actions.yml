@@ -40,7 +40,7 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/user-management-service-image:v2 .
+        docker build -f user-management-service/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/user-management-service-image:v2 .
         docker push ${{ secrets.DOCKER_USERNAME }}/user-management-service-image:latest
 
     # - name: Build & push Docker image
