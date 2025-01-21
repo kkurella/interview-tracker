@@ -27,15 +27,12 @@ jobs:
       run: mvn clean install
 
     - name: Build & push Docker image
-      if: success(
-
-    - uses: mr-smithers-excellent/docker-build-push@v6
+      if: ${{ success() }}
+      uses: mr-smithers-excellent/docker-build-push@v6
       with:
-        image: repo/image
+        image: kkurella/iview-tracker
         tags: v1, latest
-        registry: registry-url.io
-        dockerfile: Dockerfile.ci
+        registry: https://index.docker.io/v1/
+        dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-
-        
