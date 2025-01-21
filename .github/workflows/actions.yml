@@ -26,29 +26,16 @@ jobs:
     - name: Build Project
       run: mvn clean install
 
-    - name: Increment version and create tag
-      if: success()
-      run: |
-        # Get the latest tag from git
-        latest_tag=$(git tag -l "user-management-service-*" | sort -V | tail -n 1)
-        
-        # Extract the version number from the latest tag, for example: user-management-service-1.0.1
-        version=${latest_tag#user-management-service-}
-        
-        # Increment the patch version (e.g., 1.0.1 -> 1.0.2)
-        IFS='.' read -r major minor patch <<< "$version"
-        patch=$((patch + 1))
-        new_version="$major.$minor.$patch"
-        
-        # Create a new tag with the incremented version
-        new_tag="user-management-service-$new_version"
-        
-        # Tag the commit with the new version
-        git tag "$new_tag"
-        
-        # Push the new tag to the remote repository
-        git push origin "$new_tag"
-        
-        # Output the new tag for logging purposes
-        echo "Created new tag: $new_tag"
+    - name: Build & push Docker image
+      if: success(
+
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: repo/image
+        tags: v1, latest
+        registry: registry-url.io
+        dockerfile: Dockerfile.ci
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
         
