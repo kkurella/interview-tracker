@@ -2,18 +2,18 @@ package com.iview.controller;
 
 import com.iview.dto.UserDto;
 import com.iview.dto.UserLoginRequest;
-import com.iview.entity.User;
 import com.iview.security.JwtUtil;
 import com.iview.service.UserService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,8 +32,11 @@ public class UserAuthController {
 
     @PostMapping("/public/register")
     @Operation( summary="add new user", description = "API for registering new user.")
-    public void addUser(@RequestBody UserDto user){
-        userService.addUser(user);
+    @Transactional(propagation = Propagation.REQUIRED, timeout = 2000)
+    public ResponseEntity<String> addUser(@RequestBody UserDto user){
+        userService.registerUser(user);
+        return new ResponseEntity<String>("Registration successful!",HttpStatus.CREATED);
+
     }
 
     @PostMapping(value = "/public/login")

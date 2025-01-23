@@ -1,0 +1,75 @@
+-- [2025-01-09 16:02:50] Connected
+--
+-- postgres> CREATE TABLE users (
+--
+--          user_sk SERIAL PRIMARY KEY,
+--
+--          user_id INTEGER,
+--
+--          username VARCHAR(50) UNIQUE NOT NULL,
+--
+--          password VARCHAR(255) NOT NULL,
+--
+--          email VARCHAR(100) UNIQUE NOT NULL,
+--
+--          status varchar(20),
+--
+--          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--
+--          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+--
+--           )
+--
+--
+--
+--  CREATE TABLE users (
+--
+--      user_sk SERIAL PRIMARY KEY,
+--
+--      user_id INTEGER,
+--
+--      username VARCHAR(50) UNIQUE NOT NULL,
+--
+--      password VARCHAR(255) NOT NULL,
+--
+--      email VARCHAR(100) UNIQUE NOT NULL,
+--
+--      status varchar(20),
+--
+--      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--
+--      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+--
+-- )
+-- CREATE TABLE users (
+--
+--     user_sk SERIAL PRIMARY KEY,
+--
+--     user_id INTEGER,
+--
+--     username VARCHAR(50) UNIQUE NOT NULL,
+--
+--     password VARCHAR(255) NOT NULL,
+--
+--     email VARCHAR(100) UNIQUE NOT NULL,
+--
+--     status varchar(20),
+--
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+--
+--                  )
+-- -- Fix roles_sk column as this will be ROLE NAME that will be unique can be
+-- -- used as Primary Key.
+--
+-- ALTER TABLE roles
+--     ALTER COLUMN roles_sk TYPE varchar(50);
+--
+-- ALTER TABLE user_roles
+--     ALTER COLUMN roles_sk TYPE varchar(50);
+--
+-- ALTER TABLE user_roles DROP CONSTRAINT user_roles_roles_sk_fkey;
+--
+-- ALTER TABLE user_roles ADD CONSTRAINT user_roles_roles_sk_fkey
+--     FOREIGN KEY(roles_sk) REFERENCES roles(roles_sk);

@@ -3,12 +3,15 @@ package com.iview.entity;
 //import jakarta.persistence.*; // From spring boot 3.3.7
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,5 +37,8 @@ public class User {
     @Column(nullable = false)
     private String status;
 
-    private String role; // e.g., ROLE_USER, ROLE_ADMIN
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> roles; // e.g., ROLE_USER, ROLE_ADMIN
+
+    private String role; //remove this later
 }

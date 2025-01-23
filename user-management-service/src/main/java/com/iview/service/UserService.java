@@ -2,11 +2,16 @@ package com.iview.service;
 
 import com.iview.dto.UserDto;
 import com.iview.entity.User;
+import com.iview.entity.UserRole;
 import com.iview.repository.UserRepository;
 import com.iview.util.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import static com.iview.util.UserRole.ROLE_USER;
 
 @Service
 public class UserService {
@@ -14,9 +19,13 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public void addUser(UserDto userDto){
+    @Autowired
+    UserRoleService userRoleService;
+
+    public void registerUser(UserDto userDto){
         User user = toEntity(userDto);
         userRepository.save(user);
+        userRoleService.assignRoleToUser(user.getUserSk(), ROLE_USER.toString());
     }
 
     private User toEntity(UserDto userDto) {
