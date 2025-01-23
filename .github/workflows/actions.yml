@@ -1,6 +1,9 @@
 name: Build and push image on Merge to Develop
 
 on:
+  push:
+    branches:
+      - Iview3
   pull_request:
     branches:
       - develop
@@ -25,21 +28,28 @@ jobs:
 
     - name: Build Project
       run: mvn clean install
+      
+    - name: Use Repository Secret
+      run: echo "Repository Secret ${{ secrets.DOCKER_USERNAME }}"
+      
+    - name: Use Environment Secret
+      run: echo "Environment Secret ${{ secrets.DOCKER_PASSWORD }}_debug"
+    
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Build & push Docker image
-      if: ${{ success() }}
-      uses: mr-smithers-excellent/docker-build-push@v6
-      with:
-        image: kkurella/user-management-service-image
-        tags: v1, latest
-<<<<<<< HEAD
-        dockerfile: user-management-service/Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-=======
-        registry: https://index.docker.io/v1/
-        dockerfile: user-management-service/Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        context: user-management-service
->>>>>>> 188b353b03ac240852ef9171d4f70579bd377f37
+    - name: Build and Push Docker Image
+      run: |
+        docker build -f user-management-service/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/user-management-service-image:v2 .
+        docker push ${{ secrets.DOCKER_USERNAME }}/user-management-service-image:v2
+
+    # - name: Build & push Docker image
+    #   if: ${{ success() }}
+    #   uses: mr-smithers-excellent/docker-build-push@v6
+    #   with:
+    #     image: kkurella/user-management-service-image
+    #     tags: v1, latest
+    #     registry: Docker.io
+    #     dockerfile: user-management-service/Dockerfile
+    #     username: ${{ secrets.DOCKER_USERNAME }}
+    #     password: ${{ secrets.DOCKER_PASSWORD }}
