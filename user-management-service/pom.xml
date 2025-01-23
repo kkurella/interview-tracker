@@ -14,12 +14,6 @@
 	<description>user management micro service</description>
 	<version>1.0.2-SNAPSHOT</version>
 	<url/>
-<!--	<licenses>-->
-<!--		<license/>-->
-<!--	</licenses>-->
-<!--	<developers>-->
-<!--		<developer/>-->
-<!--	</developers>-->
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -93,7 +87,6 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.6.0</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
