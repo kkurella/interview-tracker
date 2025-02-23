@@ -29,6 +29,8 @@
 
     <modules>
         <module>user-management-service</module>
+        <module>job-application-service</module>
+        <module>interview-preparation-service</module>
     </modules>
 
     <build>

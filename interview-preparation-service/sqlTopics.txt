@@ -1,0 +1,35 @@
+##### Subqueries and data integrity#####
+Question: Write a SQL query to find all employees in the `employees` table whose `salary` is greater than the average salary in their department. Assume that the table has `employee_id`, `department_id`, and `salary` columns.
+
+Example Answer:
+
+SELECT employee_id, department_id, salary
+
+FROM employees e
+
+WHERE salary > (
+
+    SELECT AVG(salary)
+
+    FROM employees
+
+    WHERE department_id = e.department_id
+
+);
+Explanation: This query uses a subquery to calculate the average salary within each department. The main query then selects employees whose salary exceeds the average salary of their respective department. The use of correlated subqueries (where the subquery references a column from the outer query) is a powerful technique for comparing data within grouped contexts.
+
+#########Indexes, performance, and transaction control#######
+Question: Suppose you need to delete a large number of records from the `transactions` table where the `transaction_date` is older than one year. Write a SQL script that includes steps to ensure the deletion is efficient and doesn’t affect the performance of the database during the operation. Assume an index exists on the `transaction_date` column.
+
+Example Answer:
+
+BEGIN;
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+DELETE FROM transactions
+
+WHERE transaction_date < NOW() - INTERVAL '1 year';
+
+COMMIT;
+Explanation: This script begins with a `BEGIN` statement to start a transaction. The `SET TRANSACTION ISOLATION LEVEL` command ensures that the operation uses the appropriate isolation level to prevent reading data that has been modified but not committed by other transactions (dirty reads), improving performance during the deletion. The `DELETE` operation then removes records older than one year, leveraging the existing index on `transaction_date` for faster execution. Finally, the `COMMIT` statement ensures that all changes are saved permanently, maintaining data integrity and consistency.

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "users")
+//@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :username")//NAmedNativeQuery for frwuenty used queries
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

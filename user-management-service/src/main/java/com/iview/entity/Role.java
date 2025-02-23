@@ -1,6 +1,8 @@
 package com.iview.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter@Setter
 @Table(name = "roles")
 public class Role {
 

@@ -33,9 +33,9 @@ public class UserAuthController {
     @PostMapping("/public/register")
     @Operation( summary="add new user", description = "API for registering new user.")
     @Transactional(propagation = Propagation.REQUIRED, timeout = 2000)
-    public ResponseEntity<String> addUser(@RequestBody UserDto user){
-        userService.registerUser(user);
-        return new ResponseEntity<String>("Registration successful!",HttpStatus.CREATED);
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto user){
+        UserDto userDto = userService.registerUser(user);
+        return new ResponseEntity<UserDto>(userDto,HttpStatus.CREATED);
 
     }
 
